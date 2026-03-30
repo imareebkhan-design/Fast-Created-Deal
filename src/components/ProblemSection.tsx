@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 function useVisible(threshold = 0.12) {
   const ref = useRef<HTMLDivElement>(null)
@@ -20,8 +20,51 @@ function useVisible(threshold = 0.12) {
 
 const ff = 'var(--font-sans)'
 
+const PROBLEM_ITEMS = [
+  {
+    num: '01',
+    title: 'Multiple EMIs bleeding you dry',
+    desc: "3–5 different EMIs. Different banks. Different due dates. One missed payment — your CIBIL takes a hit you didn't deserve.",
+  },
+  {
+    num: '02',
+    title: 'Your salary is drained before you breathe',
+    desc: '₹85,000 comes in. ₹62,000 leaves in EMIs. You\'re left with ₹23,000 for everything else. Every single month.',
+  },
+  {
+    num: '03',
+    title: 'Your CIBIL score is quietly collapsing',
+    desc: 'Every late payment drops your score. Lower score = worse loan offers = higher EMIs. The trap tightens itself.',
+  },
+  {
+    num: '04',
+    title: 'Paying 2× more interest than you should',
+    desc: 'Personal loans at 18–24%. Credit card rollovers at 36–42%. You\'re not spending more — you\'re being overcharged.',
+  },
+] as const
+
+const DURATION = 4000 // ms per item
+
 export default function ProblemSection() {
   const [sectionRef, sectionVisible] = useVisible(0.06)
+
+  // ── Interactive problem list state ───────────────────────────────
+  const [activeIdx,  setActiveIdx]  = useState(0)
+  const [generation, setGeneration] = useState(0) // increments on every activation
+
+  const goTo = useCallback((i: number) => {
+    setActiveIdx(i)
+    setGeneration(g => g + 1)
+  }, [])
+
+  // Auto-advance: restarts whenever generation changes (click or timer tick)
+  useEffect(() => {
+    const t = setTimeout(() => {
+      setActiveIdx(prev => (prev + 1) % PROBLEM_ITEMS.length)
+      setGeneration(g => g + 1)
+    }, DURATION)
+    return () => clearTimeout(t)
+  }, [generation])
 
   return (
     <section
@@ -87,54 +130,76 @@ export default function ProblemSection() {
             &ldquo;You&rsquo;re not bad with money. You were sold the wrong loans at the wrong rates. That&rsquo;s fixable.&rdquo;
           </p>
 
-          {/* Problem items */}
+          {/* Problem items — interactive cycling list */}
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {[
-              {
-                num: '01',
-                title: 'Multiple EMIs bleeding you dry',
-                desc: '3–5 different EMIs. Different banks. Different due dates. One missed payment — your CIBIL takes a hit you didn\'t deserve.',
-              },
-              {
-                num: '02',
-                title: 'Paying 2× more interest than you should',
-                desc: 'Personal loans at 18–24%. Credit card rollovers at 36–42%. You\'re not spending more — you\'re being overcharged.',
-              },
-              {
-                num: '03',
-                title: 'Nobody is in your corner',
-                desc: 'Banks won\'t restructure their own loans. It costs them income. You\'re managing it alone with no clear path out.',
-              },
-            ].map((item, i) => (
-              <div
-                key={i}
-                className={`ps-item${sectionVisible ? ' ps-on' : ''}`}
-                style={{
-                  padding: '22px 0',
-                  borderTop: i === 0 ? '1px solid #E4E4E7' : 'none',
-                  borderBottom: '1px solid #E4E4E7',
-                  display: 'flex',
-                  gap: '20px',
-                  alignItems: 'flex-start',
-                  transitionDelay: `${i * 0.13}s`,
-                }}
-              >
-                <span style={{
-                  fontFamily: ff, fontSize: '12px', fontWeight: 700,
-                  color: '#A1A1AA', minWidth: '26px', paddingTop: '3px',
-                }}>
-                  {item.num}
-                </span>
-                <div>
-                  <div style={{ fontFamily: ff, fontSize: '17px', fontWeight: 700, color: '#09090B', marginBottom: '6px', letterSpacing: '-0.01em' }}>
-                    {item.title}
-                  </div>
-                  <div style={{ fontFamily: ff, fontSize: '15px', color: '#52525B', lineHeight: 1.65 }}>
-                    {item.desc}
+            {PROBLEM_ITEMS.map((item, i) => {
+              const isActive = activeIdx === i
+              return (
+                <div
+                  key={i}
+                  onClick={() => goTo(i)}
+                  className={`ps-item${sectionVisible ? ' ps-on' : ''}`}
+                  style={{
+                    padding: '20px 0',
+                    borderTop: i === 0 ? '1px solid #E4E4E7' : 'none',
+                    borderBottom: '1px solid #E4E4E7',
+                    display: 'flex',
+                    gap: '20px',
+                    alignItems: 'flex-start',
+                    transitionDelay: `${i * 0.13}s`,
+                    cursor: 'pointer',
+                    userSelect: 'none',
+                  }}
+                >
+                  <span style={{
+                    fontFamily: ff, fontSize: '12px', fontWeight: 700,
+                    color: isActive ? '#4F46E5' : '#A1A1AA',
+                    minWidth: '26px', paddingTop: '3px',
+                    transition: 'color 0.3s ease',
+                  }}>
+                    {item.num}
+                  </span>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{
+                      fontFamily: ff, fontSize: '17px', fontWeight: 700,
+                      color: isActive ? '#09090B' : '#A1A1AA',
+                      marginBottom: '6px', letterSpacing: '-0.01em',
+                      transition: 'color 0.3s ease',
+                    }}>
+                      {item.title}
+                    </div>
+                    <div style={{
+                      fontFamily: ff, fontSize: '15px', lineHeight: 1.65,
+                      color: isActive ? '#52525B' : 'transparent',
+                      maxHeight: isActive ? '120px' : '0px',
+                      overflow: 'hidden',
+                      transition: 'max-height 0.35s ease, color 0.25s ease',
+                    }}>
+                      {item.desc}
+                    </div>
+                    {/* Progress bar track */}
+                    <div style={{
+                      height: '2px', borderRadius: '1px',
+                      background: '#E4E4E7',
+                      marginTop: '12px',
+                      overflow: 'hidden',
+                    }}>
+                      {isActive && (
+                        <div
+                          key={generation}
+                          style={{
+                            height: '100%',
+                            background: '#4F46E5',
+                            borderRadius: '1px',
+                            animation: `ps-item-progress ${DURATION}ms linear forwards`,
+                          }}
+                        />
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
 

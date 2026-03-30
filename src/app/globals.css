@@ -240,6 +240,59 @@ body {
   .hidden-lt-lg { display: none !important; }
 }
 
+/* ── Hero ──────────────────────────────────────────────────────── */
+@keyframes hero-gold-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(232,150,10,0.45); }
+  70%       { box-shadow: 0 0 0 5px rgba(232,150,10,0); }
+}
+@keyframes hero-chevron-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(5px); }
+}
+.hero-gold-dot    { animation: hero-gold-pulse 2s ease infinite; }
+.hero-chev-bounce { animation: hero-chevron-bounce 1.6s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-gold-dot, .hero-chev-bounce { animation: none; }
+}
+
+/* ── Footer ────────────────────────────────────────────────────── */
+@keyframes footer-marquee    { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+@keyframes footer-heartbeat  {
+  0%,100%{transform:scale(1)}
+  14%{transform:scale(1.2)}
+  28%{transform:scale(1)}
+  42%{transform:scale(1.15)}
+  56%{transform:scale(1)}
+}
+
+.footer-marquee-track { animation: footer-marquee 30s linear infinite; }
+.footer-marquee-wrap:hover .footer-marquee-track { animation-play-state: paused; }
+
+.footer-nav-link {
+  position: relative;
+}
+.footer-nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 0; height: 1px;
+  background: rgba(79,70,229,0.5);
+  transition: width 0.25s ease;
+}
+.footer-nav-link:hover::after { width: 100%; }
+
+.footer-fade-up {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.footer-fade-up.visible { opacity: 1; transform: translateY(0); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .footer-heart { animation: footer-heartbeat 1.8s ease-in-out infinite; }
+}
+
 /* ── Problem Section ───────────────────────────────────────────── */
 @keyframes ps-drain-bar {
   0%   { width: 85%; background: #059669; }
@@ -256,6 +309,8 @@ body {
 @keyframes ps-float-d { 0%,100%{transform:rotate(1.5deg) translateY(0)} 50%{transform:rotate(0deg) translateY(-7px)} }
 @keyframes ps-float-e { 0%,100%{transform:rotate(-1deg) translateY(0)} 50%{transform:rotate(.5deg) translateY(-8px)} }
 @keyframes ps-float-f { 0%,100%{transform:rotate(2deg) translateY(0)} 50%{transform:rotate(1deg) translateY(-6px)} }
+
+@keyframes ps-item-progress { from { width: 0% } to { width: 100% } }
 
 .ps-item {
   opacity: 0;

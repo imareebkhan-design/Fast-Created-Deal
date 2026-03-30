@@ -9,7 +9,6 @@ import HowItWorks from "@/components/HowItWorks";
 import EMICalculator from "@/components/EMICalculator";
 import LeadForm from "@/components/LeadForm";
 import WhyUsSection from "@/components/WhyUsSection";
-import BottomCTA from "@/components/BottomCTA";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import MobileStickyBar from "@/components/MobileStickyBar";
@@ -29,7 +28,6 @@ export default function Home() {
       <EMICalculator />
       <LeadForm />
       <WhyUsSection />
-      <BottomCTA />
       <Footer />
       <FloatingWhatsApp />
       <MobileStickyBar />
