@@ -1,26 +1,286 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* ── Design tokens — Fast Credit Deal ─────────────────────────── */
+  --color-bg-base:    #FAFAFA;
+  --color-bg-surface: #FFFFFF;
+  --color-bg-subtle:  #F4F4F5;
+  --color-bg-dark:    #18181B;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  --color-text-primary: #09090B;
+  --color-text-body:    #52525B;
+  --color-text-muted:   #A1A1AA;
+
+  --color-border:       #E4E4E7;
+  --color-border-dark:  rgba(255,255,255,0.08);
+
+  --color-accent:       #4F46E5;
+  --color-accent-light: #EEF2FF;
+  --color-accent-dark:  #4338CA;
+
+  --color-savings:      #059669;
+  --color-savings-bg:   #ECFDF5;
+  --color-old-emi:      #DC2626;
+  --color-old-emi-bg:   #FEF2F2;
+
+  --color-whatsapp:     #25D366;
+  --color-whatsapp-dark:#1DA851;
+
+  @keyframes ticker {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
   }
+
+  @keyframes wa-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
+    70%       { box-shadow: 0 0 0 12px rgba(37, 211, 102, 0); }
+  }
+
+  --animate-ticker:   ticker 36s linear infinite;
+  --animate-wa-pulse: wa-pulse 2.5s infinite;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #FAFAFA;
+  color: #09090B;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Custom range slider ───────────────────────────────────────── */
+.fcd-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 100px;
+  background: linear-gradient(
+    to right,
+    #4F46E5 var(--pct, 0%),
+    #E4E4E7 var(--pct, 0%)
+  );
+  outline: none;
+  cursor: pointer;
+}
+
+.fcd-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4F46E5;
+  cursor: pointer;
+  box-shadow: 0 1px 6px rgba(79, 70, 229, 0.35);
+  border: 3px solid #FFFFFF;
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.15s;
+}
+
+.fcd-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 2px 12px rgba(79, 70, 229, 0.45);
+}
+
+.fcd-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4F46E5;
+  cursor: pointer;
+  box-shadow: 0 1px 6px rgba(79, 70, 229, 0.35);
+  border: 3px solid #FFFFFF;
+}
+
+.fcd-slider:focus-visible {
+  outline: 2px solid #4F46E5;
+  outline-offset: 4px;
+}
+
+@keyframes float-a { 0%,100%{transform:translateY(0px) rotate(-6deg)} 50%{transform:translateY(-12px) rotate(-4deg)} }
+@keyframes float-b { 0%,100%{transform:translateY(0px) rotate(4deg)} 50%{transform:translateY(-8px) rotate(6deg)} }
+@keyframes float-c { 0%,100%{transform:translateY(0px) rotate(-2deg)} 50%{transform:translateY(-10px) rotate(0deg)} }
+@keyframes float-d { 0%,100%{transform:translateY(0px) rotate(8deg)} 50%{transform:translateY(-14px) rotate(6deg)} }
+@keyframes float-e { 0%,100%{transform:translateY(0px) rotate(-10deg)} 50%{transform:translateY(-6px) rotate(-8deg)} }
+@keyframes card-shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(260%)} }
+@keyframes bank-ticker  { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(6px); }
+}
+
+@media (max-width: 1024px) {
+  .floating-card, .bank-pill, .emi-card, .loan-card { display: none; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-bounce  { animation: scroll-bounce 2s ease-in-out infinite; }
+  .float-a        { animation: float-a 4s   ease-in-out infinite; }
+  .float-b        { animation: float-b 5s   ease-in-out infinite 0.5s; }
+  .float-c        { animation: float-c 6s   ease-in-out infinite; }
+  .float-d        { animation: float-d 4.5s ease-in-out infinite; }
+  .float-e        { animation: float-e 5.5s ease-in-out infinite; }
+  .card-shimmer   { animation: card-shimmer 3s   ease-in-out infinite; }
+  .card-shimmer-b { animation: card-shimmer 3s   ease-in-out 1.5s infinite; }
+  .bank-ticker-track { animation: bank-ticker 28s linear infinite; }
+}
+
+.bank-ticker-wrap:hover .bank-ticker-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── EMI Calculator ────────────────────────────────────────────── */
+@keyframes calc-gate-in    { from{opacity:0;transform:scale(0.96)} to{opacity:1;transform:scale(1)} }
+@keyframes calc-save-pulse { 0%,100%{text-shadow:0 0 0px rgba(52,211,153,0)} 50%{text-shadow:0 0 28px rgba(52,211,153,0.45)} }
+@keyframes calc-shimmer    { 0%{transform:translateX(-100%)} 100%{transform:translateX(200%)} }
+@keyframes calc-float-bdg  { 0%,100%{transform:translateY(0px)} 50%{transform:translateY(-4px)} }
+@keyframes calc-shake      { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+/* Custom slider — 22px thumb, indigo glow ring */
+.calc-slider {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 4px; border-radius: 99px;
+  outline: none; cursor: pointer;
+}
+.calc-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: #4F46E5; cursor: pointer;
+  border: 3px solid #FFFFFF;
+  box-shadow: 0 0 0 1px #4F46E5, 0 4px 12px rgba(79,70,229,0.4);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+.calc-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 1px #4F46E5, 0 4px 20px rgba(79,70,229,0.55);
+}
+.calc-slider::-moz-range-thumb {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: #4F46E5; cursor: pointer;
+  border: 3px solid #FFFFFF;
+  box-shadow: 0 0 0 1px #4F46E5, 0 4px 12px rgba(79,70,229,0.4);
+}
+.calc-slider:focus-visible { outline: 2px solid #4F46E5; outline-offset: 4px; }
+
+.calc-shake { animation: calc-shake 0.3s ease !important; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .calc-save-pulse  { animation: calc-save-pulse 3s ease-in-out infinite; }
+  .calc-float-badge { animation: calc-float-bdg 3s ease-in-out infinite; }
+  .calc-shimmer-div {
+    position: absolute; top: 0; left: 0;
+    width: 40%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+    transform: translateX(-100%);
+    animation: calc-shimmer 2.8s ease-in-out infinite;
+    pointer-events: none;
+  }
+}
+
+/* ── Why Us Section ────────────────────────────────────────────── */
+@keyframes wus-shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(250%)} }
+
+.wus-shimmer-div {
+  position: absolute; top: 0; left: -60%;
+  width: 40%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(79,70,229,0.04), transparent);
+  pointer-events: none; z-index: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .wus-shimmer-div { animation: wus-shimmer 4s ease-in-out infinite; }
+}
+
+@media (max-width: 1100px) {
+  .wus-float-visual { display: none !important; }
+}
+
+/* On mobile: hide the middle "feature" column in comparison grid */
+@media (max-width: 767px) {
+  .wus-comp-grid { grid-template-columns: 1fr 1fr !important; }
+  .wus-feature-col { display: none !important; }
+}
+
+/* ── Consultation Section ──────────────────────────────────────── */
+@keyframes consult-bar-pulse { from { width: 58% } to { width: 90% } }
+
+@media (prefers-reduced-motion: no-preference) {
+  .consult-speed-bar { animation: consult-bar-pulse 2.8s ease-in-out infinite alternate; }
+}
+
+@media (max-width: 1023px) {
+  .hidden-lt-lg { display: none !important; }
+}
+
+/* ── Problem Section ───────────────────────────────────────────── */
+@keyframes ps-drain-bar {
+  0%   { width: 85%; background: #059669; }
+  35%  { width: 85%; background: #059669; }
+  70%  { width: 20%; background: #DC2626; }
+  100% { width: 20%; background: #DC2626; }
+}
+@keyframes ps-pulse-r { 0%,100%{opacity:.5;transform:scale(1)} 50%{opacity:1;transform:scale(1.35)} }
+@keyframes ps-pulse-a { 0%,100%{opacity:.5;transform:scale(1)} 50%{opacity:1;transform:scale(1.35)} }
+@keyframes ps-pulse-i { 0%,100%{opacity:.5;transform:scale(1)} 50%{opacity:1;transform:scale(1.35)} }
+@keyframes ps-strike  { from{width:0} to{width:100%} }
+@keyframes ps-fade-up { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+@keyframes ps-float-a { 0%,100%{transform:rotate(-2deg) translateY(0)} 50%{transform:rotate(-.5deg) translateY(-9px)} }
+@keyframes ps-float-d { 0%,100%{transform:rotate(1.5deg) translateY(0)} 50%{transform:rotate(0deg) translateY(-7px)} }
+@keyframes ps-float-e { 0%,100%{transform:rotate(-1deg) translateY(0)} 50%{transform:rotate(.5deg) translateY(-8px)} }
+@keyframes ps-float-f { 0%,100%{transform:rotate(2deg) translateY(0)} 50%{transform:rotate(1deg) translateY(-6px)} }
+
+.ps-item {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.ps-item.ps-on { opacity: 1; transform: translateY(0); }
+
+.ps-mini-card {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.ps-mini-card.ps-on { opacity: 1; transform: translateY(0); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .ps-drain-bar { animation: ps-drain-bar 3.5s ease-in-out 1.2s infinite alternate; }
+  .ps-dot-r     { animation: ps-pulse-r 1.3s ease-in-out infinite; }
+  .ps-dot-a     { animation: ps-pulse-a 1.6s ease-in-out .4s infinite; }
+  .ps-dot-i     { animation: ps-pulse-i 1.4s ease-in-out .8s infinite; }
+  .ps-emi-strike { animation: ps-strike .5s ease-out 4.5s both; width: 0; }
+  .ps-vc-1.ps-on { animation: ps-fade-up .55s ease-out .1s both, ps-float-a 5.4s ease-in-out .65s infinite; }
+  .ps-vc-4.ps-on { animation: ps-fade-up .55s ease-out .5s both, ps-float-d 6s ease-in-out 1.05s infinite; }
+  .ps-vc-5.ps-on { animation: ps-fade-up .55s ease-out .65s both, ps-float-e 5.2s ease-in-out 1.2s infinite; }
+  .ps-vc-6.ps-on { animation: ps-fade-up .55s ease-out .8s both, ps-float-f 4.8s ease-in-out 1.35s infinite; }
+  .ps-mc-1.ps-on { transition-delay: .32s; }
+  .ps-mc-2.ps-on { transition-delay: .46s; }
 }
