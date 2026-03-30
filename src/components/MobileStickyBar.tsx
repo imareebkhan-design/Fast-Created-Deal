@@ -47,7 +47,7 @@ export default function MobileStickyBar() {
             style={{
               flex: 1,
               height: '46px',
-              background: '#4F46E5',
+              background: '#111111',
               color: '#FFFFFF',
               fontFamily: 'var(--font-sans)',
               fontWeight: 600,
@@ -58,7 +58,7 @@ export default function MobileStickyBar() {
               letterSpacing: '-0.01em',
             }}
           >
-            Check My Savings
+            Get My Free Savings Report
           </button>
           <a
             href={WA_LINK}

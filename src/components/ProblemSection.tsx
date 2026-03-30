@@ -23,7 +23,7 @@ const ff = 'var(--font-sans)'
 const PROBLEM_ITEMS = [
   {
     num: '01',
-    title: 'Multiple EMIs bleeding you dry',
+    title: "You're paying 18–24% interest when 10–13% exists",
     desc: "3–5 different EMIs. Different banks. Different due dates. One missed payment — your CIBIL takes a hit you didn't deserve.",
   },
   {
@@ -33,12 +33,12 @@ const PROBLEM_ITEMS = [
   },
   {
     num: '03',
-    title: 'Your CIBIL score is quietly collapsing',
+    title: 'Every missed call is another ₹40,000 gone',
     desc: 'Every late payment drops your score. Lower score = worse loan offers = higher EMIs. The trap tightens itself.',
   },
   {
     num: '04',
-    title: 'Paying 2× more interest than you should',
+    title: 'More loans = worse terms. It compounds.',
     desc: 'Personal loans at 18–24%. Credit card rollovers at 36–42%. You\'re not spending more — you\'re being overcharged.',
   },
 ] as const
@@ -105,7 +105,7 @@ export default function ProblemSection() {
         <div>
           <span style={{
             display: 'block', fontFamily: ff, fontSize: '11px', fontWeight: 700,
-            letterSpacing: '0.1em', textTransform: 'uppercase', color: '#4F46E5',
+            letterSpacing: '0.1em', textTransform: 'uppercase', color: '#e8960a',
             marginBottom: '20px',
           }}>
             The Problem
@@ -127,7 +127,7 @@ export default function ProblemSection() {
             marginBottom: '52px', paddingLeft: '16px',
             borderLeft: '2px solid #E4E4E7',
           }}>
-            &ldquo;You&rsquo;re not bad with money. You were sold the wrong loans at the wrong rates. That&rsquo;s fixable.&rdquo;
+            &ldquo;I didn&rsquo;t know I was paying ₹38,000 too much every month — until FCD showed me the maths.&rdquo;
           </p>
 
           {/* Problem items — interactive cycling list */}

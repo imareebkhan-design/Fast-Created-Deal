@@ -138,14 +138,14 @@ export default function EMICalculator() {
       <div style={{ position: 'relative', zIndex: 1, maxWidth: '1100px', margin: '0 auto' }}>
 
         {/* Header */}
-        <span style={{ display: 'block', fontFamily: ff, fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#4F46E5', marginBottom: '16px' }}>
+        <span style={{ display: 'block', fontFamily: ff, fontSize: '11px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#e8960a', marginBottom: '16px' }}>
           EMI Calculator
         </span>
         <h2 style={{ fontFamily: ff, fontSize: 'clamp(30px, 5vw, 52px)', fontWeight: 900, letterSpacing: '-0.03em', lineHeight: 1.06, color: '#09090B', marginBottom: '8px' }}>
-          See exactly how much<br />you can save.
+          Most people are shocked<br />by this number.
         </h2>
         <p style={{ fontFamily: ff, fontSize: '17px', color: '#52525B', marginBottom: '52px', maxWidth: '480px', lineHeight: 1.6 }}>
-          Move the sliders to match your situation. Your savings estimate updates live.
+          Move the sliders to see what you&apos;re actually overpaying — and what you could keep.
         </p>
 
         {/* ── Calculator Card ── */}
@@ -350,17 +350,17 @@ export default function EMICalculator() {
                 <button
                   onClick={() => setShowGate(true)}
                   style={{
-                    width: '100%', background: '#4F46E5', color: '#FFFFFF',
+                    width: '100%', background: '#111111', color: '#FFFFFF',
                     fontFamily: ff, fontSize: '15px', fontWeight: 700,
                     padding: '16px 24px', borderRadius: '10px', border: 'none',
                     cursor: 'pointer', letterSpacing: '-0.01em',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-                    boxShadow: '0 4px 16px rgba(79,70,229,0.4)',
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.25)',
                     position: 'relative', overflow: 'hidden',
                     transition: 'background 0.15s, box-shadow 0.15s',
                   }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#4338CA'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 6px 24px rgba(79,70,229,0.55)' }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = '#4F46E5'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 16px rgba(79,70,229,0.4)' }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#1a1a1a'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 6px 24px rgba(0,0,0,0.35)' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = '#111111'; (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 16px rgba(0,0,0,0.25)' }}
                 >
                   <div className="calc-shimmer-div" />
                   <div style={{ width: '20px', height: '20px', borderRadius: '50%', background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, position: 'relative' }}>

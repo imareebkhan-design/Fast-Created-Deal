@@ -6,8 +6,8 @@ import { motion } from 'framer-motion'
 const FONT    = "var(--font-jakarta), 'Plus Jakarta Sans', sans-serif"
 const GOLD    = '#e8960a'
 const GOLD_DK = '#c47b00'
-const HEADLINE = 'Stop overpaying your EMIs.'
-const GOLD_WORD = 'EMIs.'
+const HEADLINE = 'Your banks are charging you ₹40,000 more than they should. Every month.'
+const GOLD_WORD = 'Every month.'
 
 // ── Animation variants ───────────────────────────────────────────────────────
 
@@ -340,9 +340,9 @@ export default function Hero() {
             maxWidth: '540px', margin: '0 auto 24px',
           }}
         >
-          Find out how much you can save — most of our clients save{' '}
+          We consolidate your loans and negotiate your rate down. Most clients save{' '}
           <span style={{ fontWeight: 700, color: GOLD }}>₹28,000–₹40,000</span>
-          {' '}every month. No documents, no credit check, no commitment.
+          {' '}per month from Month 1.
         </motion.p>
 
         {/* 4a — Primary CTA */}
@@ -378,7 +378,7 @@ export default function Hero() {
               e.currentTarget.style.boxShadow = ''
             }}
           >
-            Calculate My Savings →
+            Check What I&apos;m Overpaying →
           </motion.button>
         </motion.div>
 
@@ -401,7 +401,7 @@ export default function Hero() {
             onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
           >
             <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#25D366', display: 'inline-block', flexShrink: 0 }} />
-            Chat on WhatsApp →
+            Or chat on WhatsApp — 2 hr response
           </a>
         </motion.div>
 
@@ -411,9 +411,9 @@ export default function Hero() {
           style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', gap: '6px 0', marginBottom: '10px' }}
         >
           {[
-            'No CIBIL impact',
-            'No documents at this stage',
-            'Takes 60 seconds',
+            '13 years experience',
+            '40+ bank partners',
+            'Delhi NCR, Mumbai & Bangalore',
           ].map((item, i) => (
             <span key={item} style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
               <span style={{ color: GOLD, fontWeight: 700, fontSize: '12px' }}>✓</span>
@@ -431,9 +431,11 @@ export default function Hero() {
           style={{ fontFamily: FONT, fontSize: '14px', color: '#52525B', margin: 0 }}
         >
           <span style={{ color: GOLD, letterSpacing: '1px' }}>★★★★★</span>
-          {' '}Trusted by{' '}
+          {' '}
           <span style={{ fontWeight: 700, fontSize: '15px', color: '#111111' }}>500+</span>
-          {' '}salaried professionals
+          {' '}clients · avg.{' '}
+          <span style={{ fontWeight: 700, color: '#111111' }}>₹33,000</span>
+          {' '}saved/month
         </motion.p>
 
         {/* 7 — Scroll indicator */}
@@ -464,7 +466,7 @@ export default function Hero() {
               transition: 'border-color 0.2s',
             }}
           >
-            See how much you can save
+            See if you qualify
           </span>
           <span className="hero-chev-bounce" style={{ display: 'flex', alignItems: 'center', color: '#888888' }}>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">

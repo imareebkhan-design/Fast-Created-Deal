@@ -82,7 +82,7 @@ function Step01Mockup() {
         transition={{ delay: 0.6, duration: 0.3 }}
         style={{
           marginTop: '4px', alignSelf: 'flex-start',
-          background: '#4F46E5', border: 'none', borderRadius: '8px',
+          background: '#111111', border: 'none', borderRadius: '8px',
           padding: '10px 18px', fontFamily: ff, fontSize: '13px',
           fontWeight: 600, color: '#FFFFFF', cursor: 'pointer',
           letterSpacing: '-0.01em',
@@ -255,30 +255,30 @@ function Step04Mockup() {
 const steps = [
   {
     num: '01',
-    title: 'Tell us your situation',
-    body: 'Fill the form in 60 seconds. Salary, total EMI, number of loans. That\'s all we need.',
+    title: 'Tell us your current EMI load',
+    body: 'Share your salary and loan details in under 60 seconds. No documents. No CIBIL pull.',
     time: '60 sec',
     mockup: <Step01Mockup />,
   },
   {
     num: '02',
-    title: 'We analyse your profile',
-    body: 'Within 2 hours, our expert sends a clear breakdown on WhatsApp — exactly how much you can save.',
+    title: "We find the rate your bank won't offer you",
+    body: 'Our team scans 40+ lenders to find a deal your current bank won\'t — then we negotiate it for you.',
     time: '2 hrs',
     mockup: <Step02Mockup />,
   },
   {
     num: '03',
-    title: 'We find the right lender',
-    body: '13 years + 40 banks = we know where you\'ll be approved before we apply. Zero rejected applications.',
+    title: 'One loan replaces all of them',
+    body: 'We handle the paperwork, lender coordination, and timing. You sign once.',
     time: 'Same day',
     mockup: <Step03Mockup />,
   },
   {
     num: '04',
-    title: 'You save. Every month.',
-    body: 'Bank disbursals in 48 hours. NBFC same day. Your new, lower EMI starts from Month 1.',
-    time: '48 hrs',
+    title: 'Lower EMI hits your account',
+    body: 'Most clients see their new EMI within 21 days. The savings start from Month 1.',
+    time: '21 days',
     mockup: <Step04Mockup />,
   },
 ]
@@ -296,7 +296,7 @@ export default function HowItWorks() {
             viewport={{ once: true }}
             style={{
               display: 'block', fontFamily: ff, fontSize: '11px', fontWeight: 600,
-              color: '#4F46E5', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '14px',
+              color: '#e8960a', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '14px',
             }}
           >
             The Process
@@ -311,7 +311,7 @@ export default function HowItWorks() {
               color: '#FFFFFF', lineHeight: 1.15, letterSpacing: '-0.03em',
             }}
           >
-            Four steps.<br />Lower EMI in 4 days.
+            Four steps.<br />Lighter EMIs from Month 1.
           </motion.h2>
         </div>
 

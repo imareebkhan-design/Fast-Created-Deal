@@ -146,7 +146,7 @@ export default function LeadForm() {
             style={{
               fontFamily: ff, fontSize: '11px', fontWeight: 700,
               letterSpacing: '0.1em', textTransform: 'uppercase',
-              color: '#4F46E5', marginBottom: '16px', display: 'block',
+              color: '#e8960a', marginBottom: '16px', display: 'block',
             }}
           >
             Free Consultation
@@ -692,14 +692,14 @@ export default function LeadForm() {
                       disabled={submitting}
                       style={{
                         width: '100%', position: 'relative', overflow: 'hidden',
-                        background: submitting ? '#A1A1AA' : '#4F46E5',
+                        background: submitting ? '#A1A1AA' : '#111111',
                         color: 'white', fontFamily: ff,
                         fontSize: '15px', fontWeight: 700,
                         padding: '16px 24px', borderRadius: '10px', border: 'none',
                         cursor: submitting ? 'not-allowed' : 'pointer',
                         letterSpacing: '-0.01em',
                         display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
-                        boxShadow: '0 4px 16px rgba(79,70,229,0.4)',
+                        boxShadow: '0 4px 16px rgba(0,0,0,0.25)',
                         transition: 'background 0.15s, box-shadow 0.15s',
                       }}
                     >

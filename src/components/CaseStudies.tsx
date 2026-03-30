@@ -6,6 +6,18 @@ import { useEffect, useRef, useState } from 'react'
 
 const cases = [
   {
+    name: 'Vikram P.',
+    role: 'Branch Manager, HDFC Bank',
+    city: 'Mumbai',
+    avatar: 'https://randomuser.me/api/portraits/men/57.jpg',
+    before: 95000,
+    after: 61500,
+    saving: 33500,
+    loans: 4,
+    note: 'same-day NBFC approval',
+    quote: "Even working in a bank, I couldn't restructure my own loans. Fast Credit Deal did in 4 days what I couldn't do in 4 years. The WhatsApp process was completely transparent.",
+  },
+  {
     name: 'Rajan S.',
     role: 'Senior Software Engineer',
     city: 'Bengaluru',
@@ -28,18 +40,6 @@ const cases = [
     loans: 3,
     note: 'closed in 37 days',
     quote: "As a government employee I was worried about eligibility. They found an NBFC the same day. My EMI dropped by ₹30,800 — that's basically my food and travel budget recovered.",
-  },
-  {
-    name: 'Vikram P.',
-    role: 'Branch Manager, HDFC Bank',
-    city: 'Mumbai',
-    avatar: 'https://randomuser.me/api/portraits/men/57.jpg',
-    before: 95000,
-    after: 61500,
-    saving: 33500,
-    loans: 4,
-    note: 'same-day NBFC approval',
-    quote: "Even working in a bank, I couldn't restructure my own loans. Fast Credit Deal did in 4 days what I couldn't do in 4 years. The WhatsApp process was completely transparent.",
   },
   {
     name: 'Priya M.',
@@ -263,7 +263,7 @@ export default function CaseStudies() {
                 fontFamily: 'var(--font-sans)',
                 fontSize: '11px',
                 fontWeight: 600,
-                color: '#4F46E5',
+                color: '#e8960a',
                 textTransform: 'uppercase',
                 letterSpacing: '0.08em',
                 marginBottom: '14px',
@@ -285,7 +285,7 @@ export default function CaseStudies() {
                 letterSpacing: '-0.03em',
               }}
             >
-              People like you.<br />Real savings.<br />Real numbers.
+              Real salaries. Real savings.<br />Verified every single time.
             </motion.h2>
           </div>
 
@@ -298,10 +298,10 @@ export default function CaseStudies() {
               style={{ textAlign: 'right' }}
             >
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: '#A1A1AA', marginBottom: '4px' }}>
-                All savings from actual disbursement records.
+                Every number below came from an actual client file.
               </p>
               <p style={{ fontFamily: 'var(--font-sans)', fontSize: '13px', color: '#A1A1AA' }}>
-                Names changed for privacy.
+                No estimates. Names changed for privacy.
               </p>
             </motion.div>
           </div>

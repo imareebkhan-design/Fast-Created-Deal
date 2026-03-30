@@ -34,8 +34,8 @@ const ADV_CARDS = [
   {
     badge: null, num: '04',
     iconBg: 'rgba(239,68,68,0.1)', icon: '🎯',
-    title: 'We only take cases we can close. Seriously.',
-    body: 'We work exclusively with salaried professionals carrying ₹40K+ EMI burden. If your profile doesn\'t qualify, we tell you immediately — and explain exactly why. No false hope. No wasted time.',
+    title: 'We only take cases we can close.',
+    body: 'We work exclusively with salaried professionals carrying ₹40K+ monthly EMI burden. If your profile doesn\'t fit, we tell you upfront — and explain why. No false hope. No wasted time.',
   },
 ]
 
@@ -121,7 +121,7 @@ export default function WhyUsSection() {
                 transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                 style={{ width: '6px', height: '6px', borderRadius: '50%', background: ACCENT }}
               />
-              <span style={{ fontFamily: ff, fontSize: '11px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: ACCENT }}>
+              <span style={{ fontFamily: ff, fontSize: '11px', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#e8960a' }}>
                 Why Fast Credit Deal
               </span>
             </div>
@@ -142,9 +142,9 @@ export default function WhyUsSection() {
             </p>
             <div style={{ display: 'flex', gap: '24px' }}>
               {[
-                { num: '₹2.3', sup: 'Cr+', label: 'Total saved' },
-                { num: '500',  sup: '+',   label: 'Clients helped' },
-                { num: '21',   sup: 'd',   label: 'Avg. disbursal' },
+                { num: '₹2.3', sup: 'Cr+', label: 'Total savings delivered to clients' },
+                { num: '500',  sup: '+',   label: 'Salaried professionals paying less' },
+                { num: '21',   sup: 'd',   label: 'Average days to first lower EMI' },
               ].map((s, i) => (
                 <div key={i} style={{ display: 'contents' }}>
                   {i > 0 && <div style={{ width: '1px', background: BORDER, alignSelf: 'stretch', margin: '4px 0' }} />}
