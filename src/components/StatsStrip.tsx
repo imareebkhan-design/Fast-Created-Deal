@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 
 interface StatConfig {
   label: string
@@ -15,133 +16,105 @@ const stats: StatConfig[] = [
   { target: 21,  label: 'Average days to disbursal',      display: (t) => `${t} Days` },
 ]
 
-// ── Bank logo SVG marks (transparent bg, brand colours) ─────────────────────
-const BANK_LOGOS: { name: string; width: number; node: React.ReactNode }[] = [
+// ── Bank logo definitions ────────────────────────────────────────────────────
+// Real PNGs from Figma community file for major banks; SVG marks for others
+type BankLogo =
+  | { type: 'img'; name: string; src: string; w: number; h: number }
+  | { type: 'svg'; name: string; node: React.ReactNode; w: number }
+
+const BANK_LOGOS: BankLogo[] = [
   {
-    name: 'HDFC Bank', width: 90,
+    type: 'img', name: 'HDFC Bank',
+    src: '/banks/hdfc.png', w: 116, h: 24,
+  },
+  {
+    type: 'img', name: 'ICICI Bank',
+    src: '/banks/icici.png', w: 100, h: 24,
+  },
+  {
+    type: 'img', name: 'State Bank of India',
+    src: '/banks/sbi.png', w: 60, h: 24,
+  },
+  {
+    type: 'img', name: 'Axis Bank',
+    src: '/banks/axis.png', w: 80, h: 24,
+  },
+  {
+    type: 'svg', name: 'Kotak Mahindra Bank', w: 160,
     node: (
-      <svg width="90" height="28" viewBox="0 0 90 28" fill="none">
-        <text x="0" y="19" fill="#004B8D" fontSize="15" fontWeight="900" fontFamily="'Arial Black',Arial,sans-serif" letterSpacing="-0.4">HDFC</text>
-        <text x="50" y="19" fill="#004B8D" fontSize="13" fontWeight="400" fontFamily="Arial,sans-serif">Bank</text>
+      <svg width="160" height="24" viewBox="0 0 160 24" fill="none">
+        <text x="0" y="18" fill="#ED1C24" fontSize="20" fontWeight="900" fontFamily="'Arial Black',Arial,sans-serif">K</text>
+        <text x="18" y="18" fill="#231F20" fontSize="13" fontWeight="700" fontFamily="Arial,sans-serif" letterSpacing="0.5">OTAK MAHINDRA</text>
       </svg>
     ),
   },
   {
-    name: 'ICICI Bank', width: 100,
+    type: 'svg', name: 'IDFC FIRST Bank', w: 100,
     node: (
-      <svg width="100" height="28" viewBox="0 0 100 28" fill="none">
-        {/* 6 vertical bars — ICICI logo mark */}
-        {[0,8,16,24,32,40].map((x, i) => (
-          <rect key={i} x={x} y="5" width="4" height="18" rx="2" fill="#F37329"/>
-        ))}
-        <text x="52" y="19" fill="#F37329" fontSize="13" fontWeight="700" fontFamily="Arial,sans-serif">Bank</text>
+      <svg width="100" height="24" viewBox="0 0 100 24" fill="none">
+        <text x="0" y="15" fill="#00A7B5" fontSize="12" fontWeight="900" fontFamily="'Arial Black',Arial,sans-serif" letterSpacing="1">IDFC</text>
+        <text x="0" y="24" fill="#00A7B5" fontSize="9" fontWeight="600" fontFamily="Arial,sans-serif" letterSpacing="0.5">FIRST BANK</text>
       </svg>
     ),
   },
   {
-    name: 'SBI', width: 76,
+    type: 'svg', name: 'IndusInd Bank', w: 130,
     node: (
-      <svg width="76" height="28" viewBox="0 0 76 28" fill="none">
-        {/* SBI keyhole mark */}
-        <circle cx="14" cy="11" r="6" stroke="#22409A" strokeWidth="2.2" fill="none"/>
-        <rect x="11" y="11" width="6" height="7" rx="1" fill="#22409A"/>
-        <text x="26" y="20" fill="#22409A" fontSize="14" fontWeight="900" fontFamily="'Arial Black',Arial,sans-serif">SBI</text>
+      <svg width="130" height="24" viewBox="0 0 130 24" fill="none">
+        <path d="M8 2L14 10L8 18L2 10Z" fill="#0033A0"/>
+        <text x="20" y="17" fill="#0033A0" fontSize="13" fontWeight="800" fontFamily="'Arial Black',Arial,sans-serif" letterSpacing="-0.3">IndusInd</text>
+        <text x="20" y="24" fill="#0033A0" fontSize="9" fontWeight="400" fontFamily="Arial,sans-serif">Bank</text>
       </svg>
     ),
   },
   {
-    name: 'Axis Bank', width: 86,
+    type: 'svg', name: 'Yes Bank', w: 86,
     node: (
-      <svg width="86" height="28" viewBox="0 0 86 28" fill="none">
-        {/* A mark */}
-        <path d="M4 22L12 6L20 22" stroke="#97144D" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-        <path d="M6.5 17h11" stroke="#97144D" strokeWidth="2" strokeLinecap="round"/>
-        <text x="26" y="20" fill="#97144D" fontSize="13" fontWeight="700" fontFamily="Arial,sans-serif">Axis</text>
+      <svg width="86" height="24" viewBox="0 0 86 24" fill="none">
+        <text x="0" y="17" fill="#0A2240" fontSize="16" fontWeight="900" fontFamily="'Arial Black',Arial,sans-serif">YES</text>
+        <text x="42" y="17" fill="#0A2240" fontSize="14" fontWeight="400" fontFamily="Arial,sans-serif">BANK</text>
+        <rect x="0" y="20" width="38" height="2" rx="1" fill="#F5A623"/>
       </svg>
     ),
   },
   {
-    name: 'Kotak', width: 82,
+    type: 'svg', name: 'Punjab National Bank', w: 104,
     node: (
-      <svg width="82" height="28" viewBox="0 0 82 28" fill="none">
-        {/* K mark */}
-        <text x="0" y="21" fill="#ED1C24" fontSize="20" fontWeight="900" fontFamily="'Arial Black',Arial,sans-serif">K</text>
-        <text x="18" y="20" fill="#231F20" fontSize="13" fontWeight="700" fontFamily="Arial,sans-serif">OTAK</text>
+      <svg width="104" height="24" viewBox="0 0 104 24" fill="none">
+        <path d="M4 16L8 6L12 12L16 6L20 6L20 16Z" fill="#1A3A8B"/>
+        <text x="25" y="17" fill="#1A3A8B" fontSize="13" fontWeight="900" fontFamily="'Arial Black',Arial,sans-serif">PNB</text>
       </svg>
     ),
   },
   {
-    name: 'Bajaj Finance', width: 110,
+    type: 'svg', name: 'Bank of Baroda', w: 120,
     node: (
-      <svg width="110" height="28" viewBox="0 0 110 28" fill="none">
-        {/* Chevron mark */}
-        <path d="M4 8h8l6 6-6 6H4l6-6z" fill="#FF6600"/>
-        <text x="22" y="20" fill="#003399" fontSize="13" fontWeight="800" fontFamily="'Arial Black',Arial,sans-serif">Bajaj</text>
-        <text x="62" y="20" fill="#666" fontSize="11" fontWeight="400" fontFamily="Arial,sans-serif">Finance</text>
+      <svg width="120" height="24" viewBox="0 0 120 24" fill="none">
+        <circle cx="10" cy="12" r="7" stroke="#FF7A00" strokeWidth="2.2" fill="none"/>
+        <circle cx="10" cy="12" r="3" fill="#FF7A00"/>
+        <text x="23" y="11" fill="#FF7A00" fontSize="10" fontWeight="800" fontFamily="'Arial Black',Arial,sans-serif">Bank of</text>
+        <text x="23" y="22" fill="#FF7A00" fontSize="10" fontWeight="800" fontFamily="'Arial Black',Arial,sans-serif">Baroda</text>
       </svg>
     ),
   },
   {
-    name: 'IDFC First', width: 100,
+    type: 'svg', name: 'Bajaj Finance', w: 118,
     node: (
-      <svg width="100" height="28" viewBox="0 0 100 28" fill="none">
-        <text x="0" y="17" fill="#00A7B5" fontSize="13" fontWeight="900" fontFamily="'Arial Black',Arial,sans-serif" letterSpacing="0.5">IDFC</text>
-        <text x="0" y="27" fill="#00A7B5" fontSize="9.5" fontWeight="600" fontFamily="Arial,sans-serif" letterSpacing="0.3">FIRST BANK</text>
+      <svg width="118" height="24" viewBox="0 0 118 24" fill="none">
+        <path d="M2 7h9l6 5-6 5H2l6-5z" fill="#FF6600"/>
+        <text x="20" y="16" fill="#003399" fontSize="12.5" fontWeight="900" fontFamily="'Arial Black',Arial,sans-serif">Bajaj</text>
+        <text x="62" y="16" fill="#555" fontSize="11" fontWeight="400" fontFamily="Arial,sans-serif">Finance</text>
       </svg>
     ),
   },
   {
-    name: 'IndusInd', width: 96,
+    type: 'svg', name: 'Tata Capital', w: 108,
     node: (
-      <svg width="96" height="28" viewBox="0 0 96 28" fill="none">
-        {/* Diamond mark */}
-        <path d="M10 4L16 11L10 18L4 11Z" fill="#0033A0"/>
-        <text x="22" y="19" fill="#0033A0" fontSize="12.5" fontWeight="800" fontFamily="'Arial Black',Arial,sans-serif" letterSpacing="-0.3">IndusInd</text>
-      </svg>
-    ),
-  },
-  {
-    name: 'Yes Bank', width: 96,
-    node: (
-      <svg width="96" height="28" viewBox="0 0 96 28" fill="none">
-        <text x="0" y="20" fill="#0A2240" fontSize="15" fontWeight="900" fontFamily="'Arial Black',Arial,sans-serif">YES</text>
-        <text x="40" y="20" fill="#0A2240" fontSize="13" fontWeight="400" fontFamily="Arial,sans-serif">BANK</text>
-        {/* Gold underline accent */}
-        <rect x="0" y="23" width="33" height="2" rx="1" fill="#F5A623"/>
-      </svg>
-    ),
-  },
-  {
-    name: 'PNB', width: 70,
-    node: (
-      <svg width="70" height="28" viewBox="0 0 70 28" fill="none">
-        {/* Crown mark */}
-        <path d="M4 14L7 8L10 12L13 8L16 8L16 14Z" fill="#1A3A8B"/>
-        <text x="20" y="20" fill="#1A3A8B" fontSize="14" fontWeight="900" fontFamily="'Arial Black',Arial,sans-serif">PNB</text>
-      </svg>
-    ),
-  },
-  {
-    name: 'Bank of Baroda', width: 106,
-    node: (
-      <svg width="106" height="28" viewBox="0 0 106 28" fill="none">
-        {/* Sun ring */}
-        <circle cx="12" cy="14" r="7" stroke="#FF7A00" strokeWidth="2.5" fill="none"/>
-        <circle cx="12" cy="14" r="3" fill="#FF7A00"/>
-        <text x="24" y="16" fill="#FF7A00" fontSize="11" fontWeight="800" fontFamily="'Arial Black',Arial,sans-serif">Bank of</text>
-        <text x="24" y="26" fill="#FF7A00" fontSize="11" fontWeight="800" fontFamily="'Arial Black',Arial,sans-serif">Baroda</text>
-      </svg>
-    ),
-  },
-  {
-    name: 'Tata Capital', width: 108,
-    node: (
-      <svg width="108" height="28" viewBox="0 0 108 28" fill="none">
-        {/* T mark */}
-        <rect x="4" y="6" width="14" height="3" rx="1.5" fill="#0066B3"/>
-        <rect x="9.5" y="6" width="3" height="14" rx="1.5" fill="#0066B3"/>
-        <text x="24" y="16" fill="#0066B3" fontSize="11" fontWeight="700" fontFamily="Arial,sans-serif">TATA</text>
-        <text x="24" y="26" fill="#0066B3" fontSize="10" fontWeight="400" fontFamily="Arial,sans-serif">Capital</text>
+      <svg width="108" height="24" viewBox="0 0 108 24" fill="none">
+        <rect x="3" y="5" width="14" height="2.5" rx="1.25" fill="#0066B3"/>
+        <rect x="8.75" y="5" width="2.5" height="14" rx="1.25" fill="#0066B3"/>
+        <text x="22" y="14" fill="#0066B3" fontSize="11" fontWeight="700" fontFamily="Arial,sans-serif">TATA</text>
+        <text x="22" y="23" fill="#0066B3" fontSize="10" fontWeight="400" fontFamily="Arial,sans-serif">Capital</text>
       </svg>
     ),
   },
@@ -218,6 +191,43 @@ function StatItem({ stat, active, index, total }: { stat: StatConfig; active: bo
   )
 }
 
+// ── Logo item ────────────────────────────────────────────────────────────────
+function LogoItem({ logo }: { logo: BankLogo }) {
+  const hoverStyle = {
+    flexShrink: 0,
+    opacity: 0.65,
+    transition: 'opacity 0.2s',
+    display: 'flex',
+    alignItems: 'center',
+    height: '28px',
+    cursor: 'default',
+  }
+
+  const handleEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+    (e.currentTarget as HTMLDivElement).style.opacity = '1'
+  }
+  const handleLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+    (e.currentTarget as HTMLDivElement).style.opacity = '0.65'
+  }
+
+  return (
+    <div title={logo.name} style={hoverStyle} onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
+      {logo.type === 'img' ? (
+        <Image
+          src={logo.src}
+          alt={logo.name}
+          width={logo.w}
+          height={logo.h}
+          style={{ height: '28px', width: 'auto', objectFit: 'contain' }}
+          unoptimized
+        />
+      ) : (
+        logo.node
+      )}
+    </div>
+  )
+}
+
 // ── Main component ───────────────────────────────────────────────────────────
 export default function StatsStrip() {
   const ref = useRef<HTMLDivElement>(null)
@@ -271,28 +281,12 @@ export default function StatsStrip() {
             display: 'flex',
             width: 'max-content',
             alignItems: 'center',
-            gap: '48px',
+            gap: '56px',
             animation: 'bank-ticker 35s linear infinite',
           }}
         >
           {logosDoubled.map((logo, i) => (
-            <div
-              key={i}
-              title={logo.name}
-              style={{
-                flexShrink: 0,
-                opacity: 0.7,
-                transition: 'opacity 0.2s',
-                display: 'flex',
-                alignItems: 'center',
-                height: '28px',
-                cursor: 'default',
-              }}
-              onMouseEnter={e => { (e.currentTarget as HTMLDivElement).style.opacity = '1' }}
-              onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.opacity = '0.7' }}
-            >
-              {logo.node}
-            </div>
+            <LogoItem key={i} logo={logo} />
           ))}
         </div>
       </div>
